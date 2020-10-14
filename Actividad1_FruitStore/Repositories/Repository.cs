@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Actividad1_FruitStore.Repositories
 {
-    public class Repository<T> where T:class
+    public class Repository<T> where T : class
     {
         public fruteriashopContext Context { get; set; }
 
@@ -15,32 +15,45 @@ namespace Actividad1_FruitStore.Repositories
             Context = context;
         }
 
-        public IEnumerable<T> GetAll()
+        public virtual IEnumerable<T> GetAll()
         {
             return Context.Set<T>();
         }
 
-        public T Get(object id)
+        public virtual T Get(object id)
         {
             return Context.Find<T>(id);
         }
 
-        public void Insert(T entidad)
+        public virtual void Insert(T entidad)
         {
-            Context.Add<T>(entidad);
-            Context.SaveChanges();
+            if (Validate(entidad))
+            {
+                Context.Add<T>(entidad);
+                Context.SaveChanges();
+            }
         }
 
-        public void Delete(T entidad)
+        public virtual void Delete(T entidad)
         {
+
             Context.Remove<T>(entidad);
             Context.SaveChanges();
+
         }
 
-        public void Update(T entidad)
+        public virtual void Update(T entidad)
         {
-            Context.Update<T>(entidad);
-            Context.SaveChanges();
+            if (Validate(entidad))
+            {
+                Context.Update<T>(entidad);
+                Context.SaveChanges();
+            }
+        }
+
+        public virtual bool Validate(T entidad)
+        {
+            return true;
         }
     }
 }
