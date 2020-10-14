@@ -9,7 +9,7 @@
     <img src="~/img_frutas/@(Model.Id).jpg" id="imagen" />
     <p>
         <label>Precio:</label>
-        <label id="precio">@Model.Precio</label>
+        <label id="precio">@Model.Precio.Value.ToString("$ 0.00")</label>
     </p>
     <p>
         <label>Categoria:</label>

@@ -11,7 +11,7 @@
 
     @foreach (var item in Model.Productos)
     {
-       <a href="~/detalles/@Model.Nombre/@item.Nombre.Replace(" ","-")">
+       <a href="~/Info/@Model.Nombre/@item.Nombre.Replace(" ","-")">
             <div>
                 <img src="~/img_frutas/@(item.Id).jpg" />
             </div>

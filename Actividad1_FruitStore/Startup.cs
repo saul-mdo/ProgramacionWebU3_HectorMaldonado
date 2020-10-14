@@ -29,8 +29,9 @@ namespace Actividad1_FruitStore
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseRouting();
             app.UseFileServer();
+            app.UseRouting();
+            
 
             app.UseEndpoints(endpoints =>
             {

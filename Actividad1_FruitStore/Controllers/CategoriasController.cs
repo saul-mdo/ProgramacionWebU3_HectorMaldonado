@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Actividad1_FruitStore.Models;
 using Actividad1_FruitStore.Repositories;
+using Microsoft.CodeAnalysis.Operations;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Actividad1_FruitStore.Controllers
 {
@@ -41,12 +43,25 @@ namespace Actividad1_FruitStore.Controllers
 
         }
 
-        public IActionResult Editar()
+        public IActionResult Editar(int id)
         {
             return View();
         }
 
-        public IActionResult Eliminar()
+        [HttpPost]
+        public IActionResult Editar(Categorias c)
+        {
+            return View();
+        }
+
+
+        public IActionResult Eliminar(int id)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Eliminar(Categorias c)
         {
             return View();
         }

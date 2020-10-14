@@ -37,7 +37,7 @@ namespace Actividad1_FruitStore.Controllers
             }
         }
 
-        [Route("detalles/{categoria}/{id}")]
+        [Route("Info/{categoria}/{id}")]
         public IActionResult Ver(string categoria, string id)
         {
             using (fruteriashopContext context = new fruteriashopContext())
