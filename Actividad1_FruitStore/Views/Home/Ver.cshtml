@@ -1,26 +1,27 @@
-﻿@{
+﻿@model Actividad1_FruitStore.Models.Productos
+@{
     Layout = "_Layout";
 }
 
 <div class="datosproductos">
-    <h1 id="nombre">Lima</h1>
+    <h1 id="nombre">@Model.Nombre</h1>
 
-    <img src="~/img_frutas/23.jpg" id="imagen" />
+    <img src="~/img_frutas/@(Model.Id).jpg" id="imagen" />
     <p>
         <label>Precio:</label>
-        <label id="precio">25.9000</label>
+        <label id="precio">@Model.Precio</label>
     </p>
     <p>
         <label>Categoria:</label>
-        <label id="categoria">C&#237;tricos</label>
+        <label id="categoria">@Model.IdCategoriaNavigation.Nombre</label>
     </p>
     <p>
         <label>Unidad de Medida:</label>
-        <label id="unidadmedida">Kilo</label>
+        <label id="unidadmedida">@Model.UnidadMedida</label>
     </p>
     <p>
         <label>Descripción:</label>
-        <label id="descripcion">Es el m&#225;s &#225;cido de todos los c&#237;tricos, de hecho, casi el 8% de su peso es &#225;cido c&#237;trico.</label>
+        <label id="descripcion">@Model.Descripcion</label>
     </p>
 
     <p style="text-align:center; margin:20px 0">

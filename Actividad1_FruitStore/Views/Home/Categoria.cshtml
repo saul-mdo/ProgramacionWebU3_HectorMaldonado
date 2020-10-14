@@ -1,81 +1,24 @@
-﻿@{
+﻿@model Actividad1_FruitStore.Models.ViewModels.CategoriaViewModel
+
+@{
     Layout = "_Layout";
 }
 
-<h1 id="nombreCategoria">C&#237;tricos</h1>
+<h1 id="nombreCategoria">@Model.Nombre</h1>
 
 
 <div class="productos">
-    <a href="~/Home/Ver">
-        <div>
-            <img src="~/img_frutas/23.jpg" />
-        </div>
-        <h2>Lima</h2>
-        <h3>$ 25.90</h3>
-    </a>
-    <a href="~/Home/Ver">
-        <div>
-            <img src="~/img_frutas/23.jpg" />
-        </div>
-        <h2>Lima</h2>
-        <h3>$ 25.90</h3>
-    </a>
-    <a href="~/Home/Ver">
-        <div>
-            <img src="~/img_frutas/23.jpg" />
-        </div>
-        <h2>Lima</h2>
-        <h3>$ 25.90</h3>
-    </a>
-    <a href="~/Home/Ver">
-        <div>
-            <img src="~/img_frutas/23.jpg" />
-        </div>
-        <h2>Lima</h2>
-        <h3>$ 25.90</h3>
-    </a>
-    <a href="~/Home/Ver">
-        <div>
-            <img src="~/img_frutas/23.jpg" />
-        </div>
-        <h2>Lima</h2>
-        <h3>$ 25.90</h3>
-    </a>
-    <a href="~/Home/Ver">
-        <div>
-            <img src="~/img_frutas/23.jpg" />
-        </div>
-        <h2>Lima</h2>
-        <h3>$ 25.90</h3>
-    </a>
-    <a href="~/Home/Ver">
-        <div>
-            <img src="~/img_frutas/23.jpg" />
-        </div>
-        <h2>Lima</h2>
-        <h3>$ 25.90</h3>
-    </a>
-    <a href="~/Home/Ver">
-        <div>
-            <img src="~/img_frutas/23.jpg" />
-        </div>
-        <h2>Lima</h2>
-        <h3>$ 25.90</h3>
-    </a>
-    <a href="~/Home/Ver">
-        <div>
-            <img src="~/img_frutas/23.jpg" />
-        </div>
-        <h2>Lima</h2>
-        <h3>$ 25.90</h3>
-    </a>
-    <a href="~/Home/Ver">
-        <div>
-            <img src="~/img_frutas/23.jpg" />
-        </div>
-        <h2>Lima</h2>
-        <h3>$ 25.90</h3>
-    </a>
+
+    @foreach (var item in Model.Productos)
+    {
+       <a href="~/detalles/@Model.Nombre/@item.Nombre.Replace(" ","-")">
+            <div>
+                <img src="~/img_frutas/@(item.Id).jpg" />
+            </div>
+            <h2>@item.Nombre</h2>
+            <h3>@item.Precio.Value.ToString("$ 0.00")</h3>
+        </a>
+    }
 </div>
 
 
