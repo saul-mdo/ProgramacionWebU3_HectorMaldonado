@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@inject Actividad1_FruitStore.Services.CategoriasService servicio
+<!DOCTYPE html>
 
 <html>
 <head>
@@ -10,12 +11,11 @@
     <header></header>
     <nav>
         <a href="~/Home">Principal</a>
-        <a href="~/Home/Categoria">Categoria</a>
-        <a href="~/Home/Categoria">Categoria</a>
-        <a href="~/Home/Categoria">Categoria</a>
-        <a href="~/Home/Categoria">Categoria</a>
-        <a href="~/Home/Categoria">Categoria</a>
-        <a href="~/Home/Categoria">Categoria</a>
+        @foreach (var item in servicio.Categorias)
+        {
+            <a href="~/Home/@item.Nombre">@item.Nombre</a>
+        }
+
     </nav>
     <main>
         @RenderBody()
