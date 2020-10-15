@@ -20,7 +20,7 @@ namespace Actividad1_FruitStore.Repositories
             {
                 throw new Exception("No escribió el nombre de la categoría");
             }
-            if (Context.Categorias.Any(x => x.Nombre == entidad.Nombre))
+            if (Context.Categorias.Any(x => x.Nombre == entidad.Nombre && x.Id != entidad.Id))
             {
                 throw new Exception("Esta categoría ya está registrada");
             }

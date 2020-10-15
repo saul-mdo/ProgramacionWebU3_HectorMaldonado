@@ -17,6 +17,11 @@ namespace Actividad1_FruitStore.Repositories
             return Context.Productos.Where(x => x.IdCategoriaNavigation.Nombre == nombre);
         }
 
+        public IEnumerable<Productos> GetProductosByCategoria(int? Id)
+        {
+            return Context.Productos.Include(x=>x.IdCategoriaNavigation).Where(x => Id==null||x.IdCategoria==Id).OrderBy(x=>x.Nombre);
+        }
+
         public Productos GetProductoByCategoriaNombre(string categoria, string nombre)
         {
             return Context.Productos.Include(x=>x.IdCategoriaNavigation).FirstOrDefault(x => x.IdCategoriaNavigation.Nombre == categoria && x.Nombre == nombre);
