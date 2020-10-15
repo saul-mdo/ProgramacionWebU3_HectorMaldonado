@@ -17,9 +17,9 @@ namespace Actividad1_FruitStore.Repositories
             return Context.Productos.Where(x => x.IdCategoriaNavigation.Nombre == nombre);
         }
 
-        public IEnumerable<Productos> GetProductosByCategoria(int? Id)
+        public IEnumerable<Productos> GetProductosByCategoria(int? IdCategoria)
         {
-            return Context.Productos.Include(x=>x.IdCategoriaNavigation).Where(x => Id==null||x.IdCategoria==Id).OrderBy(x=>x.Nombre);
+            return Context.Productos.Include(x=>x.IdCategoriaNavigation).Where(x => IdCategoria==null||x.IdCategoria==IdCategoria).OrderBy(x=>x.Nombre);
         }
 
         public Productos GetProductoByCategoriaNombre(string categoria, string nombre)

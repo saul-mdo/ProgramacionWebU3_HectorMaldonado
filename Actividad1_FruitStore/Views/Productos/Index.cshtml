@@ -1,21 +1,28 @@
-﻿@{
+﻿@model Actividad1_FruitStore.Models.ViewModels.ProductosIndexViewModel
+@{
     Layout = "_LayoutAdmin";
 }
 
 <h1>Administrar Productos</h1>
 
-<section class="listado">
-    <select name="ctl00$ContentMain$ddlCategorias" onchange="javascript:setTimeout(&#39;__doPostBack(\&#39;ctl00$ContentMain$ddlCategorias\&#39;,\&#39;\&#39;)&#39;, 0)" id="ddlCategorias" style="width:100%;margin: 10px 0">
-        <option selected="selected" value="">Ver todos los productos</option>
-        <option value="10">C&#237;tricos</option>
-        <option value="1">Frutas</option>
-        <option value="7">Hongos</option>
-        <option value="3">Hortalizas</option>
-        <option value="5">Legumbres</option>
-        <option value="9">Temporada</option>
-        <option value="2">Verduras</option>
 
-    </select>
+<section class="listado">
+    <form method="post" action="~/Productos/Index">
+        <select name="IdCategoria" id="ddlCategorias" style="width:100%;margin: 10px 0" onchange="this.form.submit()">
+            <option value="">Ver todos los productos</option>
+            @foreach (var item in Model.Categorias)
+            {
+                if (item.Id == Model.IdCategoria)
+                {
+                    <option selected value="@item.Id">@item.Nombre</option>
+                }
+                else
+                {
+                    <option value="@item.Id">@item.Nombre</option>
+                }
+            }
+        </select>
+    </form>
 
     <a id="lnkNueva" class="mark" href="~/Productos/Agregar">
         <h1>Nuevo Producto...</h1>
@@ -32,141 +39,23 @@
         </div>
     </a>
 
-
-    <div class="card">
-        <h1>Lima</h1>
-        <h2>Tipo: Cítricos</h2>
-        <h2>Unidad de Medida: Kilo</h2>
-        <h2>Precio: $ 25.90</h2>
-        <h2 title="Es el más ácido de todos los cítricos, de hecho, casi el 8% de su peso es ácido cítrico.">Descripción: Es el más ácido de todos los cítricos, de hecho, casi el...</h2>
-        <div class="image">
-            <img src="../img_frutas/23.jpg" />
+    @foreach (var item in Model.Productos)
+    {
+        <div class="card">
+            <h1>@item.Nombre</h1>
+            <h2>Tipo: @item.IdCategoriaNavigation.Nombre</h2>
+            <h2>Unidad de Medida: @item.UnidadMedida</h2>
+            <h2>Precio: @item.Precio.Value.ToString("$ 0.00")</h2>
+            <h2 title="@item.Descripcion">Descripción: @(item.Descripcion.Length>50?item.Descripcion.Substring(0,50)+"...":item.Descripcion)</h2>
+            <div class="image">
+                <img src="~/img_frutas/@(item.Id).jpg" />
+            </div>
+            <div class="botones">
+                <a href="~/Productos/Editar/@item.Id" class="btnEditar"></a>
+                <a href="~/Productos/Eliminar/@item.Id" class="btnBorrar"></a>
+            </div>
         </div>
-        <div class="botones">
-            <a href="~/Productos/Editar" class="btnEditar"></a>
-            <a href="~/Productos/Eliminar" class="btnBorrar"></a>
-        </div>
-    </div>
-
-    <div class="card">
-        <h1>Lima</h1>
-        <h2>Tipo: Cítricos</h2>
-        <h2>Unidad de Medida: Kilo</h2>
-        <h2>Precio: $ 25.90</h2>
-        <h2 title="Es el más ácido de todos los cítricos, de hecho, casi el 8% de su peso es ácido cítrico.">Descripción: Es el más ácido de todos los cítricos, de hecho, casi el...</h2>
-        <div class="image">
-            <img src="../img_frutas/23.jpg" />
-        </div>
-        <div class="botones">
-            <a href="~/Productos/Editar" class="btnEditar"></a>
-            <a href="~/Productos/Eliminar" class="btnBorrar"></a>
-        </div>
-    </div>
-
-    <div class="card">
-        <h1>Lima</h1>
-        <h2>Tipo: Cítricos</h2>
-        <h2>Unidad de Medida: Kilo</h2>
-        <h2>Precio: $ 25.90</h2>
-        <h2 title="Es el más ácido de todos los cítricos, de hecho, casi el 8% de su peso es ácido cítrico.">Descripción: Es el más ácido de todos los cítricos, de hecho, casi el...</h2>
-        <div class="image">
-            <img src="../img_frutas/23.jpg" />
-        </div>
-        <div class="botones">
-            <a href="~/Productos/Editar" class="btnEditar"></a>
-            <a href="~/Productos/Eliminar" class="btnBorrar"></a>
-        </div>
-    </div>
-
-    <div class="card">
-        <h1>Lima</h1>
-        <h2>Tipo: Cítricos</h2>
-        <h2>Unidad de Medida: Kilo</h2>
-        <h2>Precio: $ 25.90</h2>
-        <h2 title="Es el más ácido de todos los cítricos, de hecho, casi el 8% de su peso es ácido cítrico.">Descripción: Es el más ácido de todos los cítricos, de hecho, casi el...</h2>
-        <div class="image">
-            <img src="../img_frutas/23.jpg" />
-        </div>
-        <div class="botones">
-            <a href="~/Productos/Editar" class="btnEditar"></a>
-            <a href="~/Productos/Eliminar" class="btnBorrar"></a>
-        </div>
-    </div>
-
-    <div class="card">
-        <h1>Lima</h1>
-        <h2>Tipo: Cítricos</h2>
-        <h2>Unidad de Medida: Kilo</h2>
-        <h2>Precio: $ 25.90</h2>
-        <h2 title="Es el más ácido de todos los cítricos, de hecho, casi el 8% de su peso es ácido cítrico.">Descripción: Es el más ácido de todos los cítricos, de hecho, casi el...</h2>
-        <div class="image">
-            <img src="../img_frutas/23.jpg" />
-        </div>
-        <div class="botones">
-            <a href="~/Productos/Editar" class="btnEditar"></a>
-            <a href="~/Productos/Eliminar" class="btnBorrar"></a>
-        </div>
-    </div>
-
-    <div class="card">
-        <h1>Lima</h1>
-        <h2>Tipo: Cítricos</h2>
-        <h2>Unidad de Medida: Kilo</h2>
-        <h2>Precio: $ 25.90</h2>
-        <h2 title="Es el más ácido de todos los cítricos, de hecho, casi el 8% de su peso es ácido cítrico.">Descripción: Es el más ácido de todos los cítricos, de hecho, casi el...</h2>
-        <div class="image">
-            <img src="../img_frutas/23.jpg" />
-        </div>
-        <div class="botones">
-            <a href="~/Productos/Editar" class="btnEditar"></a>
-            <a href="~/Productos/Eliminar" class="btnBorrar"></a>
-        </div>
-    </div>
-
-    <div class="card">
-        <h1>Lima</h1>
-        <h2>Tipo: Cítricos</h2>
-        <h2>Unidad de Medida: Kilo</h2>
-        <h2>Precio: $ 25.90</h2>
-        <h2 title="Es el más ácido de todos los cítricos, de hecho, casi el 8% de su peso es ácido cítrico.">Descripción: Es el más ácido de todos los cítricos, de hecho, casi el...</h2>
-        <div class="image">
-            <img src="../img_frutas/23.jpg" />
-        </div>
-        <div class="botones">
-            <a href="~/Productos/Editar" class="btnEditar"></a>
-            <a href="~/Productos/Eliminar" class="btnBorrar"></a>
-        </div>
-    </div>
-
-    <div class="card">
-        <h1>Lima</h1>
-        <h2>Tipo: Cítricos</h2>
-        <h2>Unidad de Medida: Kilo</h2>
-        <h2>Precio: $ 25.90</h2>
-        <h2 title="Es el más ácido de todos los cítricos, de hecho, casi el 8% de su peso es ácido cítrico.">Descripción: Es el más ácido de todos los cítricos, de hecho, casi el...</h2>
-        <div class="image">
-            <img src="../img_frutas/23.jpg" />
-        </div>
-        <div class="botones">
-            <a href="~/Productos/Editar" class="btnEditar"></a>
-            <a href="~/Productos/Eliminar" class="btnBorrar"></a>
-        </div>
-    </div>
-    <div class="card">
-        <h1>Lima</h1>
-        <h2>Tipo: Cítricos</h2>
-        <h2>Unidad de Medida: Kilo</h2>
-        <h2>Precio: $ 25.90</h2>
-        <h2 title="Es el más ácido de todos los cítricos, de hecho, casi el 8% de su peso es ácido cítrico.">Descripción: Es el más ácido de todos los cítricos, de hecho, casi el...</h2>
-        <div class="image">
-            <img src="../img_frutas/23.jpg" />
-        </div>
-        <div class="botones">
-            <a href="~/Productos/Editar" class="btnEditar"></a>
-            <a href="~/Productos/Eliminar" class="btnBorrar"></a>
-        </div>
-    </div>
-
+    }
 
 
 </section>
