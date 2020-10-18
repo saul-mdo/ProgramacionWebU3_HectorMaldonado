@@ -20,7 +20,7 @@ namespace Actividad1_FruitStore.Controllers
 
             int? id = null;
 
-            vm.Categorias = categoriarepos.GetAll();
+            vm.Categorias = categoriarepos.GetAll().OrderBy(x=>x.Nombre);
             vm.Productos = productosrepos.GetProductosByCategoria(id);
 
 
@@ -35,7 +35,7 @@ namespace Actividad1_FruitStore.Controllers
             ProductosRepository productosrepos = new ProductosRepository(context);
 
 
-            vm.Categorias = categoriarepos.GetAll();
+            vm.Categorias = categoriarepos.GetAll().OrderBy(x => x.Nombre);
             vm.Productos = productosrepos.GetProductosByCategoria(vm.IdCategoria);
 
             return View(vm);
@@ -43,12 +43,28 @@ namespace Actividad1_FruitStore.Controllers
 
         public IActionResult Agregar()
         {
-            return View();
+            ProductosViewModel vm = new ProductosViewModel();
+            fruteriashopContext context = new fruteriashopContext();
+            CategoriasRepository repos = new CategoriasRepository(context);
+            vm.Categorias = repos.GetAll().OrderBy(x=>x.Nombre);
+            return View(vm);
         }
         [HttpPost]
-        public IActionResult Agregar(Productos p)
+        public IActionResult Agregar(ProductosViewModel vm)
         {
-            return View();
+            fruteriashopContext context = new fruteriashopContext();
+            try
+            {
+                ProductosRepository repos = new ProductosRepository(context);
+                repos.Insert(vm.Producto);
+                return RedirectToAction("Index");
+            }catch(Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+                CategoriasRepository repos = new CategoriasRepository(context);
+                vm.Categorias = repos.GetAll().OrderBy(x => x.Nombre);
+                return View(vm);
+            }
         }
 
 
