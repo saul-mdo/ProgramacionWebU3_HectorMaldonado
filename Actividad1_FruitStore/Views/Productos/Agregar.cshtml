@@ -4,7 +4,7 @@
     Layout = "_LayoutAdmin";
 }
 
-<form method="post" asp-action="Agregar" asp-controller="Productos">
+<form method="post" asp-action="Agregar" asp-controller="Productos" enctype="multipart/form-data">
     <div>
         <h1>Agregar Producto</h1>
 
@@ -27,7 +27,7 @@
 </textarea>
 
         <label>Imagen:</label>
-        <input type="file" id="fileUpload1" accept="image/jpg" />
+        <input type="file" id="fileUpload1" accept="image/jpg" asp-for="Archivo" onchange="mostrarImagen(this)"/>
 
         <img id="imagePreview" src="~/img_frutas/no-disponible.png" alt="Vista previa de la imagen" />
 
@@ -48,17 +48,10 @@
         if (input.files && input.files[0]) {
             var reader = new FileReader();
             reader.onload = function (e) {
-                $('#imagePreview').attr('src', e.target.result);
+                document.getElementById("imagePreview").src=e.target.result;
             }
             reader.readAsDataURL(input.files[0]);
         }
     }
-
-
-    $(document).ready(function () {
-        $("#fileUpload1").change(function () {
-            mostrarImagen(this);
-        });
-    });
 
 </script>
