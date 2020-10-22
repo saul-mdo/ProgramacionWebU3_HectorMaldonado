@@ -55,7 +55,7 @@
             <h2>Precio: @item.Precio.Value.ToString("$ 0.00")</h2>
             <h2 title="@item.Descripcion">Descripción: @(item.Descripcion.Length>50?item.Descripcion.Substring(0,50)+"...":item.Descripcion)</h2>
             <div class="image">
-                <img src="~/img_frutas/@(item.Id).jpg" />
+                <img src="~/img_frutas/@(item.Id).jpg?v=1" />
             </div>
             <div class="botones">
                 <a href="~/Productos/Editar/@item.Id" class="btnEditar"></a>

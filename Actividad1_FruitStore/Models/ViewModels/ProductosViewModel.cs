@@ -10,7 +10,7 @@ namespace Actividad1_FruitStore.Models.ViewModels
     {
         public IEnumerable<Categorias> Categorias { get; set; }
         public Productos Producto { get; set; }
-
         public IFormFile Archivo { get; set; }
+        public string Imagen { get; set; }
     }
 }

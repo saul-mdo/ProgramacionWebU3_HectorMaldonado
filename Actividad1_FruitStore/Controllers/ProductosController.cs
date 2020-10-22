@@ -28,7 +28,7 @@ namespace Actividad1_FruitStore.Controllers
 
             int? id = null;
 
-            vm.Categorias = categoriarepos.GetAll().OrderBy(x=>x.Nombre);
+            vm.Categorias = categoriarepos.GetAll().OrderBy(x => x.Nombre);
             vm.Productos = productosrepos.GetProductosByCategoria(id);
 
 
@@ -54,7 +54,7 @@ namespace Actividad1_FruitStore.Controllers
             ProductosViewModel vm = new ProductosViewModel();
             fruteriashopContext context = new fruteriashopContext();
             CategoriasRepository repos = new CategoriasRepository(context);
-            vm.Categorias = repos.GetAll().OrderBy(x=>x.Nombre);
+            vm.Categorias = repos.GetAll().OrderBy(x => x.Nombre);
             return View(vm);
         }
         [HttpPost]
@@ -62,7 +62,7 @@ namespace Actividad1_FruitStore.Controllers
         {
             fruteriashopContext context = new fruteriashopContext();
 
-            if(vm.Archivo.ContentType!="image/jpeg" || vm.Archivo.Length > 1024 * 1024 * 2)
+            if (vm.Archivo.ContentType != "image/jpeg" || vm.Archivo.Length > 1024 * 1024 * 2)
             {
                 ModelState.AddModelError("", "Debe seleccionar un archivo jpg de menos de 2MB.");
                 CategoriasRepository repos = new CategoriasRepository(context);
@@ -76,13 +76,90 @@ namespace Actividad1_FruitStore.Controllers
                 ProductosRepository repos = new ProductosRepository(context);
                 repos.Insert(vm.Producto);
 
-                FileStream fs = new FileStream(Enviroment.WebRootPath+"/img_frutas/"+vm.Producto.Id+".jpg",FileMode.Create);
+                FileStream fs = new FileStream(Enviroment.WebRootPath + "/img_frutas/" + vm.Producto.Id + ".jpg", FileMode.Create);
                 vm.Archivo.CopyTo(fs);
                 fs.Close();
 
 
                 return RedirectToAction("Index");
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+                CategoriasRepository repos = new CategoriasRepository(context);
+                vm.Categorias = repos.GetAll().OrderBy(x => x.Nombre);
+                return View(vm);
+            }
+        }
+
+        public IActionResult Editar(int Id)
+        {
+            fruteriashopContext context = new fruteriashopContext();
+            ProductosRepository repos = new ProductosRepository(context);
+            ProductosViewModel vm = new ProductosViewModel();
+            vm.Producto = repos.Get(Id);
+
+            if (vm.Producto == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            CategoriasRepository cr = new CategoriasRepository(context);
+            vm.Categorias = cr.GetAll();
+
+            if (System.IO.File.Exists(Enviroment.WebRootPath + $"/img_frutas/{vm.Producto.Id}.jpg"))
+            {
+                vm.Imagen = vm.Producto.Id + ".jpg";
+            }
+            else
+            {
+                vm.Imagen = "no-disponible.png";
+            }
+
+            return View(vm);
+        }
+        [HttpPost]
+        public IActionResult Editar(ProductosViewModel vm)
+        {
+            fruteriashopContext context = new fruteriashopContext();
+
+            if (vm.Archivo != null)
+            {
+                if (vm.Archivo.ContentType != "image/jpeg" || vm.Archivo.Length > 1024 * 1024 * 2)
+                {
+                    ModelState.AddModelError("", "Debe seleccionar un archivo jpg de menos de 2MB.");
+                    CategoriasRepository repos = new CategoriasRepository(context);
+                    vm.Categorias = repos.GetAll().OrderBy(x => x.Nombre);
+                    return View(vm);
+                }
+            }
+
+            try
+            {
+                ProductosRepository repos = new ProductosRepository(context);
+
+                var producto = repos.Get(vm.Producto.Id);
+
+                if (producto != null)
+                {
+                    producto.Nombre = vm.Producto.Nombre;
+                    producto.Precio = vm.Producto.Precio;
+                    producto.IdCategoria = vm.Producto.IdCategoria;
+                    producto.Descripcion = vm.Producto.Descripcion;
+                    producto.UnidadMedida = vm.Producto.UnidadMedida;
+                    repos.Update(producto);
+
+                    if (vm.Archivo != null)
+                    {
+                        FileStream fs = new FileStream(Enviroment.WebRootPath + "/img_frutas/" + vm.Producto.Id + ".jpg", FileMode.Create);
+                        vm.Archivo.CopyTo(fs);
+                        fs.Close();
+                    }
+                }
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
             {
                 ModelState.AddModelError("", ex.Message);
                 CategoriasRepository repos = new CategoriasRepository(context);
@@ -92,25 +169,42 @@ namespace Actividad1_FruitStore.Controllers
         }
 
 
-        public IActionResult Editar()
+        public IActionResult Eliminar(int Id)
         {
-            return View();
-        }
-        [HttpPost]
-        public IActionResult Editar(Productos p)
-        {
-            return View();
-        }
+            using(fruteriashopContext context = new fruteriashopContext())
+            {
+                ProductosRepository repos = new ProductosRepository(context);
+                var p = repos.Get(Id);
 
-
-        public IActionResult Eliminar()
-        {
-            return View();
+                if (p != null)
+                {
+                    return View(p);
+                }
+                else
+                {
+                    return RedirectToAction("Index");
+                }
+            }
         }
         [HttpPost]
         public IActionResult Eliminar(Productos p)
         {
-            return View();
+            using (fruteriashopContext context = new fruteriashopContext())
+            {
+                ProductosRepository repos = new ProductosRepository(context);
+                var producto = repos.Get(p.Id);
+
+                if (producto != null)
+                {
+                    repos.Delete(producto);
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "El producto no existe o ya fué eliminado");
+                    return View();
+                }
+            }
         }
     }
 }
