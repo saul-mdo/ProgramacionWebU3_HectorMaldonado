@@ -16,7 +16,7 @@ namespace Actividad1_FruitStore.Services
             using (fruteriashopContext context = new fruteriashopContext())
             {
                 Repository<Categorias> repos = new Repository<Categorias>(context);
-                Categorias = repos.GetAll().OrderBy(x=>x.Nombre).ToList();
+                Categorias = repos.GetAll().Where(x => x.Eliminado == false).OrderBy(x=>x.Nombre).ToList();
             }
         }
     }

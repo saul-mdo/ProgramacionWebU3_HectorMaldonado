@@ -18,9 +18,10 @@ namespace Actividad1_FruitStore.Controllers
         {
             fruteriashopContext context = new fruteriashopContext();
             Repository<Categorias> repos = new Repository<Categorias>(context);
-            return View(repos.GetAll().OrderBy(x => x.Nombre));
-            // ESTO SE TIENE QUE HACER EN CASO DE QUE SE HAGA UNA ELIMINACION LOGICA
-            //return View(repos.GetAll().Where(x=>x.Eliminado==false).OrderBy(x => x.Nombre));
+            /// RETURN PARA ELIMINACIÓN FISICA
+            //return View(repos.GetAll().OrderBy(x => x.Nombre));
+            // RETURN PARA ELIMINACION LOGICA
+            return View(repos.GetAll().Where(x => x.Eliminado == false).OrderBy(x => x.Nombre));
 
 
         }
@@ -86,7 +87,6 @@ namespace Actividad1_FruitStore.Controllers
             }
         }
 
-
         public IActionResult Eliminar(int id)
         {
             using (fruteriashopContext context = new fruteriashopContext())
@@ -110,23 +110,23 @@ namespace Actividad1_FruitStore.Controllers
             try
             {
                 // ELIMINACIÓN FISICA (SE BORRA COMPLETAMENTE DE LA BASE DE DATOS)
-                using (fruteriashopContext context = new fruteriashopContext())
-                {
-                    CategoriasRepository repos = new CategoriasRepository(context);
-                    var categoria = repos.Get(c.Id);
-                    repos.Delete(categoria);
-                    return RedirectToAction("Index");
-                }
-
-                // ELIMINACION LOGICA (SE QUEDA EN LA BASE DE DATOS PERO CON UN CAMPO PARA DECIR QUE ESTÁ ELIMINADA)
                 //using (fruteriashopContext context = new fruteriashopContext())
                 //{
                 //    CategoriasRepository repos = new CategoriasRepository(context);
                 //    var categoria = repos.Get(c.Id);
-                //    categoria.Eliminado = true;
-                //    repos.Update(categoria);
+                //    repos.Delete(categoria);
                 //    return RedirectToAction("Index");
                 //}
+
+                // ELIMINACION LOGICA (SE QUEDA EN LA BASE DE DATOS PERO CON UN CAMPO PARA ESPECIFICAR QUE ESTÁ ELIMINADA)
+                using (fruteriashopContext context = new fruteriashopContext())
+                {
+                    CategoriasRepository repos = new CategoriasRepository(context);
+                    var categoria = repos.Get(c.Id);
+                    categoria.Eliminado = true;
+                    repos.Update(categoria);
+                    return RedirectToAction("Index");
+                }
 
             }
             catch (Exception ex)
