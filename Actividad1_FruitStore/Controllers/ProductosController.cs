@@ -26,10 +26,11 @@ namespace Actividad1_FruitStore.Controllers
             CategoriasRepository categoriarepos = new CategoriasRepository(context);
             ProductosRepository productosrepos = new ProductosRepository(context);
 
+
             int? id = null;
 
             // AGREGUÉ EL WHERE PARA QUE NO SE MUESTRE LA CATEGORÍA SI FUÉ ELIMINADA DE MANERA LOGICA
-            vm.Categorias = categoriarepos.GetAll().Where(x=>x.Eliminado==false).OrderBy(x => x.Nombre);
+            vm.Categorias = categoriarepos.GetAll().Where(x => x.Eliminado == false).OrderBy(x => x.Nombre);
             vm.Productos = productosrepos.GetProductosByCategoria(id);
 
 
@@ -45,7 +46,16 @@ namespace Actividad1_FruitStore.Controllers
 
             // AGREGUÉ EL WHERE PARA QUE NO SE MUESTRE LA CATEGORÍA SI FUÉ ELIMINADA DE MANERA LOGICA
             vm.Categorias = categoriarepos.GetAll().Where(x => x.Eliminado == false).OrderBy(x => x.Nombre);
-            vm.Productos = productosrepos.GetProductosByCategoria(vm.IdCategoria);
+
+            if (vm.IdCategoria == 0)
+            {
+                int? id = null;
+                vm.Productos = productosrepos.GetProductosByCategoria(id);
+            }
+            else
+            {
+                vm.Productos = productosrepos.GetProductosByCategoria(vm.IdCategoria);
+            }
 
             return View(vm);
         }
@@ -62,25 +72,36 @@ namespace Actividad1_FruitStore.Controllers
         public IActionResult Agregar(ProductosViewModel vm)
         {
             fruteriashopContext context = new fruteriashopContext();
-
-            if (vm.Archivo.ContentType != "image/jpeg" || vm.Archivo.Length > 1024 * 1024 * 2)
-            {
-                ModelState.AddModelError("", "Debe seleccionar un archivo jpg de menos de 2MB.");
-                CategoriasRepository repos = new CategoriasRepository(context);
-                vm.Categorias = repos.GetAll().Where(x=>x.Eliminado==false).OrderBy(x => x.Nombre);
-                return View(vm);
-            }
-
-
             try
             {
-                ProductosRepository repos = new ProductosRepository(context);
-                repos.Insert(vm.Producto);
+                if (vm.Archivo == null)
+                {
+                    ModelState.AddModelError("", "Debe seleccionar la imagen del producto.");
+                    CategoriasRepository categoriasrepos = new CategoriasRepository(context);
+                    vm.Categorias = categoriasrepos.GetAll().Where(x => x.Eliminado == false).OrderBy(x => x.Nombre);
+                    return View(vm);
+                }
+                else
+                {
+                    if (vm.Archivo.ContentType != "image/jpeg" || vm.Archivo.Length > 1024 * 1024 * 2)
+                    {
+                        ModelState.AddModelError("", "Debe seleccionar un archivo jpg de menos de 2MB.");
+                        CategoriasRepository repos = new CategoriasRepository(context);
+                        vm.Categorias = repos.GetAll().Where(x => x.Eliminado == false).OrderBy(x => x.Nombre);
+                        return View(vm);
+                    }
+                }
 
-                FileStream fs = new FileStream(Enviroment.WebRootPath + "/img_frutas/" + vm.Producto.Id + ".jpg", FileMode.Create);
-                vm.Archivo.CopyTo(fs);
-                fs.Close();
 
+                ProductosRepository productosrepos = new ProductosRepository(context);
+                productosrepos.Insert(vm.Producto);
+
+                if (vm.Archivo != null)
+                {
+                    FileStream fs = new FileStream(Enviroment.WebRootPath + "/img_frutas/" + vm.Producto.Id + ".jpg", FileMode.Create);
+                    vm.Archivo.CopyTo(fs);
+                    fs.Close();
+                }
 
                 return RedirectToAction("Index");
             }
@@ -106,7 +127,7 @@ namespace Actividad1_FruitStore.Controllers
             }
 
             CategoriasRepository cr = new CategoriasRepository(context);
-            vm.Categorias = cr.GetAll().Where(x => x.Eliminado == false).OrderBy(x=>x.Nombre);
+            vm.Categorias = cr.GetAll().Where(x => x.Eliminado == false).OrderBy(x => x.Nombre);
 
             if (System.IO.File.Exists(Enviroment.WebRootPath + $"/img_frutas/{vm.Producto.Id}.jpg"))
             {
@@ -172,7 +193,7 @@ namespace Actividad1_FruitStore.Controllers
 
         public IActionResult Eliminar(int Id)
         {
-            using(fruteriashopContext context = new fruteriashopContext())
+            using (fruteriashopContext context = new fruteriashopContext())
             {
                 ProductosRepository repos = new ProductosRepository(context);
                 var p = repos.Get(Id);
