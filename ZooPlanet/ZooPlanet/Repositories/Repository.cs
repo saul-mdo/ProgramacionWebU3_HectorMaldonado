@@ -28,14 +28,20 @@ namespace ZooPlanet.Repositories
 
 		public virtual void Insert(T entidad)
 		{
-			Context.Add(entidad);
-			Save();
+			if (Validate(entidad))
+			{
+				Context.Add(entidad);
+				Save();
+			}
 		}
 
 		public virtual void Update(T entidad)
 		{
-			Context.Update(entidad);
-			Save();
+			if (Validate(entidad))
+			{
+				Context.Update(entidad);
+				Save();
+			}
 		}
 
 		public virtual void Delete(T entidad)
@@ -49,6 +55,9 @@ namespace ZooPlanet.Repositories
 			Context.SaveChanges();
 		}
 
-
+		public virtual bool Validate(T entidad)
+		{
+			return true;
+		}
 	}
 }

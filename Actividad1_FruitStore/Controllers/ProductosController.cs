@@ -190,7 +190,6 @@ namespace Actividad1_FruitStore.Controllers
             }
         }
 
-
         public IActionResult Eliminar(int Id)
         {
             using (fruteriashopContext context = new fruteriashopContext())

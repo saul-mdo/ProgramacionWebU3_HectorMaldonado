@@ -32,6 +32,23 @@ namespace ZooPlanet.Repositories
 				.OrderBy(x => x.Especie);
 		}
 
+        public override bool Validate(Especies entidad)
+        {
+			if (Context.Especies.Any(x => x.Especie.ToUpper() == entidad.Especie.ToUpper() && x.Id != entidad.Id))
+				throw new Exception("Ya hay una especie registrada con ese nombre.");
+			if (string.IsNullOrWhiteSpace(entidad.Especie))
+				throw new Exception("Escriba el nombre de la especie.");
+			if(string.IsNullOrWhiteSpace(entidad.Habitat))
+				throw new Exception("Escriba el Habitat de la especie.");
+			if (entidad.Peso<=0 || entidad.Peso==null)
+				throw new Exception("Escriba el peso de la especie.");
+			if (entidad.Tamaño <= 0 || entidad.Tamaño == null)
+				throw new Exception("Escriba el tamaño de la especie.");
+			if (string.IsNullOrWhiteSpace(entidad.Observaciones))
+				throw new Exception("Escriba las observaciones de la especie.");
+			return true;
+        }
 
-	}
+
+    }
 }
