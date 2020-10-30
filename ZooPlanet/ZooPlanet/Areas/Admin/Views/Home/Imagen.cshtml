@@ -1,13 +1,15 @@
-﻿@{
+﻿@model ZooPlanet.Models.Especies
+
+@{
     Layout = "_Layout";
 }
 
 <h1>Agregar imagen a especie</h1>
 
-<form method="post">
-    <input type="hidden" />
+<form method="post" asp-action="Imagen" asp-controller="Home" asp-area="Admin" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Id" />
     <label>Nombre:</label>
-    <input type="text" readonly />
+    <input type="text" readonly asp-for="Especie"/>
     <label>Imagen:</label>
     <input id="fileUpload1" required type="file" accept="image/jpg" />
 

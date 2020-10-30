@@ -24,6 +24,11 @@ namespace ZooPlanet.Repositories
 			return base.GetAll().OrderBy(x=>x.Especie);
 		}
 
+        public override Especies GetById(int Id)
+        {
+			return Context.Especies.Include(x => x.IdClaseNavigation).FirstOrDefault(x => x.Id == Id);
+        }
+
 		public IEnumerable<Especies> GetEspeciesByClase(string Id)
 		{
 			return Context.Especies

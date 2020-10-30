@@ -21,7 +21,7 @@ namespace ZooPlanet.Repositories
 			return Context.Set<T>();
 		}
 
-		public virtual T GetById(object id)
+		public virtual T GetById(int id)
 		{
 			return Context.Find<T>(id);
 		}

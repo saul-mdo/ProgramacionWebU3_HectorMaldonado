@@ -1,16 +1,16 @@
-﻿
+﻿@model ZooPlanet.Models.Especies
 @{
     Layout = "_Layout";
 }
 
 <h1>Eliminar Especies</h1>
 
-<form>
+<form method="post" asp-action="Eliminar" asp-controller="Home" asp-area="Admin">
     <label>Nombre:</label>
-    <input type="text" readonly="readonly" />
+    <input type="text" readonly="readonly"  asp-for="Especie"/>
     <label>Clase:</label>
-    <input type="text" readonly="readonly" />
-    <input type="hidden" />
+    <input type="text" readonly="readonly" asp-for="IdClaseNavigation.Nombre" />
+    <input type="hidden" asp-for="Id"/>
 
 
     <input type="submit" value="Eliminar" />

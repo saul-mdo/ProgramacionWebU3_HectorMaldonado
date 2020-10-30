@@ -41,7 +41,7 @@ namespace ZooPlanet.Areas.Admin.Controllers
 
                 especierepos.Insert(evm.Especies);
 
-                return RedirectToAction("Index","Home",new { area="Admin"});
+                return RedirectToAction("Index","Home");
             }
             catch (Exception ex)
             {
@@ -61,7 +61,7 @@ namespace ZooPlanet.Areas.Admin.Controllers
             evm.Clases = clasesrepos.GetAll();
             if (evm.Especies == null)
             {
-                return RedirectToAction("Index", "Home", new { area = "Admin" });
+                return RedirectToAction("Index", "Home");
             }
             else
             return View(evm);
@@ -82,25 +82,46 @@ namespace ZooPlanet.Areas.Admin.Controllers
                 original.Tamaño = evm.Especies.Tamaño;
                 original.Observaciones = evm.Especies.Observaciones;
                 especierepos.Update(original);
-                return RedirectToAction("Index", "Home", new { area = "Admin" });
+                return RedirectToAction("Index", "Home");
             }
             else
-                return RedirectToAction("Index", "Home", new { area = "Admin" });
+                return RedirectToAction("Index", "Home");
         }
 
         public IActionResult Eliminar(int id)
         {
-            return View();
+            EspeciesRepository especierepos = new EspeciesRepository(context);
+            var especie = especierepos.GetById(id);
+            if (especie != null)
+            {
+                return View(especie);
+            }
+            else
+                return RedirectToAction("Index", "Home");
         }
         [HttpPost]
-        public IActionResult Eliminar(EspecieViewModel evm)
+        public IActionResult Eliminar(Especies esp)
         {
-            return View();
+            EspeciesRepository especierepos = new EspeciesRepository(context);
+            var original = especierepos.GetById(esp.Id);
+            if (original != null)
+            {
+                especierepos.Delete(original);
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+
+                ModelState.AddModelError("", "El producto no existe o ya fué eliminado");
+                return View();
+            }
         }
 
         public IActionResult Imagen(int id)
         {
-            return View();
+            EspeciesRepository especierepos = new EspeciesRepository(context);
+            
+            return View(especierepos.GetById(id));
         }
         [HttpPost]
         public IActionResult Imagen(Especies esp)
