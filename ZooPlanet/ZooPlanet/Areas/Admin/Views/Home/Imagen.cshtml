@@ -1,4 +1,4 @@
-﻿@model ZooPlanet.Models.Especies
+﻿@model ZooPlanet.Models.ViewModels.EspecieViewModel
 
 @{
     Layout = "_Layout";
@@ -7,13 +7,13 @@
 <h1>Agregar imagen a especie</h1>
 
 <form method="post" asp-action="Imagen" asp-controller="Home" asp-area="Admin" enctype="multipart/form-data">
-    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="Especies.Id" />
     <label>Nombre:</label>
-    <input type="text" readonly asp-for="Especie"/>
+    <input type="text" readonly asp-for="Especies.Especie"/>
     <label>Imagen:</label>
-    <input id="fileUpload1" required type="file" accept="image/jpg" />
+    <input id="fileUpload1" required type="file" accept="image/jpg" asp-for="Archivo" onchange="mostrarImagen(this)" />
 
-    <img id="imagePreview" src="~/especies/1.jpg" height="100" />
+    <img id="imagePreview" src="~/especies/@Model.Imagen" height="100" />
 
     <p class="error">* Es posible que la imagen anterior permanezca guardada en cache por el navegador.</p>
 
@@ -30,18 +30,11 @@
         if (input.files && input.files[0]) {
             var reader = new FileReader();
             reader.onload = function (e) {
-                $('#imagePreview').attr('src', e.target.result);
+                document.getElementById("imagePreview").src = e.target.result;
             }
             reader.readAsDataURL(input.files[0]);
         }
     }
-
-
-    $(document).ready(function () {
-        $("#fileUpload1").change(function () {
-            mostrarImagen(this);
-        });
-    });
 
 </script>
 

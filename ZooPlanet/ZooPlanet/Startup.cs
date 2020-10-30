@@ -25,6 +25,7 @@ namespace ZooPlanet
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public IWebHostEnvironment Enviroment { get; set; }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -32,6 +33,7 @@ namespace ZooPlanet
                 app.UseDeveloperExceptionPage();
             }
 
+            Enviroment = env;
             app.UseRouting();
             app.UseFileServer();
             app.UseEndpoints(endpoints =>
