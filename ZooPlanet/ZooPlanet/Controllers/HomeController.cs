@@ -23,6 +23,7 @@ namespace ZooPlanet.Controllers
             return View(clasesRepository.GetAll().ToList());
         }
 
+        [Route("/Clase/{id}")]
         public IActionResult Clase(string Id)
         {
             ViewBag.Clase = Id;
